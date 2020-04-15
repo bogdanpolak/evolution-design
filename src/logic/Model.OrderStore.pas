@@ -30,17 +30,6 @@ begin
     fOrders := TCollections.CreateObjectList<TOrder>(True);
 end;
 
-type
-    TFieldHelper = class helper for TField
-        function AsNullable<T>: Nullable<T>;
-    end;
-
-function TFieldHelper.AsNullable<T>: Nullable<T>;
-begin
-    if not IsNull then
-        Result := Value;
-end;
-
 procedure TOrderStore.Init(aDataModuleOrdes: TDataModuleOrders);
 var
     aDataSet: TDataSet;
@@ -48,7 +37,6 @@ var
     aAddDate: integer;
 begin
     // connect with database
-    aDataModuleOrdes.FDConnection.Open();
     aDataModuleOrdes.fdqOrders.Open();
     fOrders.Clear();
     aDataSet := aDataModuleOrdes.fdqOrders;
