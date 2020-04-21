@@ -103,3 +103,4 @@ TestInsightSettings.ini
 *.groupproj
 .vscode
 src-concept-helpers
+*.eof
