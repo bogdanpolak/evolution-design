@@ -48,39 +48,9 @@ implementation
 
 {$R *.dfm}
 
-uses
+uses 
     DataModule.Orders,
-    Model.OrderProcessor;
-
-{ TFakeOrderStore }
-
-type
-    TFakeOrderStore = class(TInterfacedObject, IOrdersStore)
-        procedure Init(aDataModuleOrdes: TDataModuleOrders);
-        function GetOrders(): IList<TOrder>;
-    end;
-
-function TFakeOrderStore.GetOrders: IList<TOrder>;
-var
-    aOrder: TOrder;
-begin
-    Result:= TCollections.CreateList<TOrder>;
-    Result.Add( 
-        TOrder.Create()
-            .WithRequiredDate(EncodeDate(2020,04,29)+14));
-    Result.Add( 
-        TOrder.Create()
-            .WithRequiredDate(EncodeDate(2020,06,04)));
-    Result.Add( 
-        TOrder.Create()
-            .WithRequiredDate(EncodeDate(2020,04,04)));
-end;
-
-procedure TFakeOrderStore.Init(aDataModuleOrdes: TDataModuleOrders);
-begin
-
-end;
-
+    Test.OrderProcessorWithFake;
 
 function DateToString(aDate: Nullable<TDateTime>): string;
 begin
@@ -111,17 +81,7 @@ end;
 
 procedure TForm1.btnRunSimpleTestClick(Sender: TObject);
 begin
-    Memo1.Lines.Clear();
-    Memo1.Lines.Add(
-        'GetUrgentCount() = ' +
-        TOrderProcessor.Create(TFakeOrderStore.Create)
-            .GetUrgentCount().ToString()
-    );
-    Memo1.Lines.Add(
-        'GetTerminatedOrdersCount() = ' +
-        TOrderProcessor.Create(TFakeOrderStore.Create)
-            .GetTerminatedOrdersCount().ToString()
-    );
+    TSimpleOrderProcessorTest.RunTests(Memo1.Lines);
 end;
 
 procedure TForm1.btnListDatesClick(Sender: TObject);
