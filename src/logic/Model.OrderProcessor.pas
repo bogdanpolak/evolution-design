@@ -32,7 +32,7 @@ end;
 
 function TOrderProcessor.GetNowDate: TDateTime;
 begin
-    Result := System.SysUtils.Now();
+    Result := Int(System.SysUtils.Now());
 end;
 
 function TOrderProcessor.GetTerminatedOrdersCount: integer;
@@ -45,7 +45,7 @@ begin
     begin
         if not aOrder.ShipDate.HasValue then
             if aOrder.RequiredDate.HasValue and
-                (aOrder.RequiredDate.Value > GetNowDate()) then
+                (aOrder.RequiredDate.Value <= GetNowDate()) then
                 inc(aCounter);
     end;
     Result := aCounter;
@@ -61,7 +61,8 @@ begin
     begin
         if not aOrder.ShipDate.HasValue then
             if aOrder.RequiredDate.HasValue and
-                (aOrder.RequiredDate.Value > GetNowDate()) then
+                (aOrder.RequiredDate.Value > GetNowDate()) and
+                (aOrder.RequiredDate.Value < GetNowDate()+14) then
                 inc(aCounter);
     end;
     Result := aCounter;

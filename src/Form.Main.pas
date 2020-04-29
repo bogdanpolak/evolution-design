@@ -30,10 +30,12 @@ type
         Splitter1: TSplitter;
         btnProcess: TButton;
         btnListDates: TButton;
+        btnRunSimpleTest: TButton;
         procedure FormCreate(Sender: TObject);
         procedure btnConnectClick(Sender: TObject);
         procedure btnProcessClick(Sender: TObject);
         procedure btnListDatesClick(Sender: TObject);
+        procedure btnRunSimpleTestClick(Sender: TObject);
     private
         fOrderProcessor: IOrderProcessor;
     public
@@ -46,8 +48,9 @@ implementation
 
 {$R *.dfm}
 
-uses
-    DataModule.Orders;
+uses 
+    DataModule.Orders,
+    Test.OrderProcessorWithFake;
 
 function DateToString(aDate: Nullable<TDateTime>): string;
 begin
@@ -76,6 +79,11 @@ begin
         fOrderProcessor.GetTerminatedOrdersCount()]));
 end;
 
+procedure TForm1.btnRunSimpleTestClick(Sender: TObject);
+begin
+    TSimpleOrderProcessorTest.RunTests(Memo1.Lines);
+end;
+
 procedure TForm1.btnListDatesClick(Sender: TObject);
 var
     aOrder: TOrder;
@@ -83,9 +91,10 @@ var
 begin
     sl := TStringList.Create;
     try
-    for aOrder in TComposer.GetOrderStore.GetOrders() do
-        sl.Add(Format('  %s  %s  %s,', [DateToString(aOrder.SaleDate),
-            DateToString(aOrder.RequiredDate), DateToString(aOrder.ShipDate)]));
+        for aOrder in TComposer.GetOrderStore.GetOrders() do
+            sl.Add(Format('  %s  %s  %s,', [DateToString(aOrder.SaleDate),
+                DateToString(aOrder.RequiredDate),
+                DateToString(aOrder.ShipDate)]));
         Memo1.Lines := sl;
     finally
         sl.Free;

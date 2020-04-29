@@ -31,7 +31,6 @@ object Form1: TForm1
     Align = alLeft
     Caption = 'GroupBox1'
     TabOrder = 0
-    ExplicitHeight = 283
     object btnConnect: TButton
       AlignWithMargins = True
       Left = 5
@@ -42,7 +41,6 @@ object Form1: TForm1
       Caption = 'btnConnect'
       TabOrder = 0
       OnClick = btnConnectClick
-      ExplicitTop = 18
     end
     object btnProcess: TButton
       AlignWithMargins = True
@@ -66,6 +64,17 @@ object Form1: TForm1
       TabOrder = 2
       OnClick = btnListDatesClick
     end
+    object btnRunSimpleTest: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 232
+      Width = 204
+      Height = 34
+      Align = alBottom
+      Caption = 'btnRunSimpleTest'
+      TabOrder = 3
+      OnClick = btnRunSimpleTestClick
+    end
   end
   object Memo1: TMemo
     AlignWithMargins = True
@@ -85,7 +94,5 @@ object Form1: TForm1
     ParentFont = False
     ScrollBars = ssVertical
     TabOrder = 1
-    ExplicitWidth = 329
-    ExplicitHeight = 283
   end
 end

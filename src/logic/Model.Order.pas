@@ -16,6 +16,7 @@ type
         fShipDate:     Nullable<TDateTime>;
         fEmployeeId:   integer;
     public
+        function WithRequiredDate(aRequiredDate: TDateTime): TOrder;
         property OrderID:      string read fOrderID write fOrderID;
         property CompanyId:    string read fCompanyId write fCompanyId;
         property SaleDate:     TDateTime read fSaleDate write fSaleDate;
@@ -26,5 +27,13 @@ type
     end;
 
 implementation
+
+{ TOrder }
+
+function TOrder.WithRequiredDate(aRequiredDate: TDateTime): TOrder;
+begin
+    RequiredDate := aRequiredDate;
+    Result := Self;
+end;
 
 end.
