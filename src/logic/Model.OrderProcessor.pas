@@ -32,7 +32,7 @@ end;
 
 function TOrderProcessor.GetNowDate: TDateTime;
 begin
-    Result := System.SysUtils.Now();
+    Result := Int(System.SysUtils.Now());
 end;
 
 function TOrderProcessor.GetTerminatedOrdersCount: integer;

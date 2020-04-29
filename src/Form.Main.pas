@@ -30,10 +30,12 @@ type
         Splitter1: TSplitter;
         btnProcess: TButton;
         btnListDates: TButton;
+        btnRunSimpleTest: TButton;
         procedure FormCreate(Sender: TObject);
         procedure btnConnectClick(Sender: TObject);
         procedure btnProcessClick(Sender: TObject);
         procedure btnListDatesClick(Sender: TObject);
+        procedure btnRunSimpleTestClick(Sender: TObject);
     private
         fOrderProcessor: IOrderProcessor;
     public
@@ -47,7 +49,38 @@ implementation
 {$R *.dfm}
 
 uses
-    DataModule.Orders;
+    DataModule.Orders,
+    Model.OrderProcessor;
+
+{ TFakeOrderStore }
+
+type
+    TFakeOrderStore = class(TInterfacedObject, IOrdersStore)
+        procedure Init(aDataModuleOrdes: TDataModuleOrders);
+        function GetOrders(): IList<TOrder>;
+    end;
+
+function TFakeOrderStore.GetOrders: IList<TOrder>;
+var
+    aOrder: TOrder;
+begin
+    Result:= TCollections.CreateList<TOrder>;
+    Result.Add( 
+        TOrder.Create()
+            .WithRequiredDate(EncodeDate(2020,04,29)+14));
+    Result.Add( 
+        TOrder.Create()
+            .WithRequiredDate(EncodeDate(2020,06,04)));
+    Result.Add( 
+        TOrder.Create()
+            .WithRequiredDate(EncodeDate(2020,04,04)));
+end;
+
+procedure TFakeOrderStore.Init(aDataModuleOrdes: TDataModuleOrders);
+begin
+
+end;
+
 
 function DateToString(aDate: Nullable<TDateTime>): string;
 begin
@@ -76,6 +109,21 @@ begin
         fOrderProcessor.GetTerminatedOrdersCount()]));
 end;
 
+procedure TForm1.btnRunSimpleTestClick(Sender: TObject);
+begin
+    Memo1.Lines.Clear();
+    Memo1.Lines.Add(
+        'GetUrgentCount() = ' +
+        TOrderProcessor.Create(TFakeOrderStore.Create)
+            .GetUrgentCount().ToString()
+    );
+    Memo1.Lines.Add(
+        'GetTerminatedOrdersCount() = ' +
+        TOrderProcessor.Create(TFakeOrderStore.Create)
+            .GetTerminatedOrdersCount().ToString()
+    );
+end;
+
 procedure TForm1.btnListDatesClick(Sender: TObject);
 var
     aOrder: TOrder;
@@ -83,9 +131,10 @@ var
 begin
     sl := TStringList.Create;
     try
-    for aOrder in TComposer.GetOrderStore.GetOrders() do
-        sl.Add(Format('  %s  %s  %s,', [DateToString(aOrder.SaleDate),
-            DateToString(aOrder.RequiredDate), DateToString(aOrder.ShipDate)]));
+        for aOrder in TComposer.GetOrderStore.GetOrders() do
+            sl.Add(Format('  %s  %s  %s,', [DateToString(aOrder.SaleDate),
+                DateToString(aOrder.RequiredDate),
+                DateToString(aOrder.ShipDate)]));
         Memo1.Lines := sl;
     finally
         sl.Free;
