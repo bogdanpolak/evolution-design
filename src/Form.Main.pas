@@ -20,7 +20,7 @@ uses
   {}
     Model.Interfaces,
     Model.Order,
-    Composer;
+    Composer, System.Actions, Vcl.ActnList;
 
 type
     TForm1 = class(TForm)
@@ -31,11 +31,14 @@ type
         btnProcess: TButton;
         btnListDates: TButton;
         btnRunSimpleTest: TButton;
+        ActionList1: TActionList;
+        actDatabaseConnect: TAction;
+        actRunOrdersProcessor: TAction;
         procedure FormCreate(Sender: TObject);
-        procedure btnConnectClick(Sender: TObject);
-        procedure btnProcessClick(Sender: TObject);
         procedure btnListDatesClick(Sender: TObject);
         procedure btnRunSimpleTestClick(Sender: TObject);
+        procedure actDatabaseConnectExecute(Sender: TObject);
+        procedure actRunOrdersProcessorExecute(Sender: TObject);
     private
         fOrderProcessor: IOrderProcessor;
     public
@@ -67,12 +70,13 @@ begin
 
 end;
 
-procedure TForm1.btnConnectClick(Sender: TObject);
+procedure TForm1.actDatabaseConnectExecute(Sender: TObject);
 begin
     TComposer.GetOrderStore.Init(DataModuleOrders);
+    actRunOrdersProcessor.Enabled:= True;
 end;
 
-procedure TForm1.btnProcessClick(Sender: TObject);
+procedure TForm1.actRunOrdersProcessorExecute(Sender: TObject);
 begin
     Memo1.Lines.Add(Format(' Urgent orders: %d,  Terminated orders %d',
         [fOrderProcessor.GetUrgentCount(),

@@ -37,10 +37,9 @@ object Form1: TForm1
       Top = 21
       Width = 204
       Height = 31
+      Action = actDatabaseConnect
       Align = alTop
-      Caption = 'btnConnect'
       TabOrder = 0
-      OnClick = btnConnectClick
     end
     object btnProcess: TButton
       AlignWithMargins = True
@@ -48,10 +47,9 @@ object Form1: TForm1
       Top = 58
       Width = 204
       Height = 31
+      Action = actRunOrdersProcessor
       Align = alTop
-      Caption = 'btnProcess'
       TabOrder = 1
-      OnClick = btnProcessClick
     end
     object btnListDates: TButton
       AlignWithMargins = True
@@ -61,7 +59,7 @@ object Form1: TForm1
       Height = 31
       Align = alBottom
       Caption = 'btnListDates'
-      TabOrder = 2
+      TabOrder = 3
       OnClick = btnListDatesClick
     end
     object btnRunSimpleTest: TButton
@@ -72,7 +70,7 @@ object Form1: TForm1
       Height = 34
       Align = alBottom
       Caption = 'btnRunSimpleTest'
-      TabOrder = 3
+      TabOrder = 2
       OnClick = btnRunSimpleTestClick
     end
   end
@@ -94,5 +92,18 @@ object Form1: TForm1
     ParentFont = False
     ScrollBars = ssVertical
     TabOrder = 1
+  end
+  object ActionList1: TActionList
+    Left = 256
+    Top = 80
+    object actDatabaseConnect: TAction
+      Caption = 'Database Connect'
+      OnExecute = actDatabaseConnectExecute
+    end
+    object actRunOrdersProcessor: TAction
+      Caption = 'Run Orders Processor'
+      Enabled = False
+      OnExecute = actRunOrdersProcessorExecute
+    end
   end
 end
