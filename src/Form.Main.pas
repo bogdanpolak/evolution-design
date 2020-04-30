@@ -8,7 +8,7 @@ uses
     System.Classes,
     Spring,
     Spring.Collections,
-  {VCL}
+    {VCL}
     Winapi.Windows,
     Winapi.Messages,
     Vcl.Graphics,
@@ -17,10 +17,12 @@ uses
     Vcl.Dialogs,
     Vcl.StdCtrls,
     Vcl.ExtCtrls,
-  {}
+    {}
     Model.Interfaces,
     Model.Order,
-    Composer, System.Actions, Vcl.ActnList;
+    Composer,
+    System.Actions,
+    Vcl.ActnList;
 
 type
     TForm1 = class(TForm)
@@ -54,17 +56,21 @@ implementation
 
 {$R *.dfm}
 
-uses 
+uses
     DataModule.Orders,
     Test.BabyToyTester;
+
 
 function DateToString(aDate: Nullable<TDateTime>): string;
 begin
     if aDate.HasValue then
-        Result := FormatDateTime('yyyy-mm-dd', aDate)
+        Result := FormatDateTime(
+            'yyyy-mm-dd',
+            aDate)
     else
         Result := '---- -- --';
 end;
+
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
@@ -72,41 +78,44 @@ begin
     fOrderProcessor := TComposer.GetCompositionRoot;
 end;
 
+
 procedure TForm1.Panel1Click(Sender: TObject);
 begin
     FlowPanel1.Visible := False;
 end;
 
+
 procedure TForm1.actDatabaseConnectExecute(Sender: TObject);
 begin
     TComposer.GetOrderStore.Init(DataModuleOrders);
-    actRunOrdersProcessor.Enabled:= True;
-    actDatabaseConnect.Enabled:= False;
+    actRunOrdersProcessor.Enabled := True;
+    actDatabaseConnect.Enabled := False;
 end;
+
 
 procedure TForm1.actRunOrdersProcessorExecute(Sender: TObject);
 begin
     Memo1.Lines.Add(Format(' Urgent orders: %d,  Terminated orders %d',
-        [fOrderProcessor.GetUrgentCount(),
-        fOrderProcessor.GetTerminatedOrdersCount()]));
+        [fOrderProcessor.GetUrgentCount(), fOrderProcessor.GetTerminatedOrdersCount()]));
 end;
+
 
 procedure TForm1.btnRunSimpleTestClick(Sender: TObject);
 begin
     TBabyToyTester.RunTests(Memo1.Lines);
 end;
 
+
 procedure TForm1.btnListDatesClick(Sender: TObject);
 var
     aOrder: TOrder;
-    sl:     TStringList;
+    sl: TStringList;
 begin
     sl := TStringList.Create;
     try
         for aOrder in TComposer.GetOrderStore.GetOrders() do
             sl.Add(Format('  %s  %s  %s,', [DateToString(aOrder.SaleDate),
-                DateToString(aOrder.RequiredDate),
-                DateToString(aOrder.ShipDate)]));
+                DateToString(aOrder.RequiredDate), DateToString(aOrder.ShipDate)]));
         Memo1.Lines := sl;
     finally
         sl.Free;

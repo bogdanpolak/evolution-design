@@ -19,6 +19,7 @@ object DataModuleOrders: TDataModuleOrders
       FieldName = 'OrderID'
       Origin = 'OrderID'
       ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
     end
     object fdqOrdersCustomerID: TStringField
       FieldName = 'CustomerID'

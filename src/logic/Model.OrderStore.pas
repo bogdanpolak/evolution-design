@@ -8,13 +8,14 @@ uses
     Spring,
     Spring.Collections,
     Data.DB,
-  {}
+    {}
     DataModule.Orders,
     Model.Order,
     Model.Interfaces;
 
 type
-    TOrderStore = class(TInterfacedObject, IOrdersStore)
+    TOrderStore = class(TInterfacedObject,
+                        IOrdersStore)
     private
         fOrders: IList<TOrder>;
     public
@@ -25,22 +26,24 @@ type
 
 implementation
 
+
 constructor TOrderStore.Create;
 begin
     fOrders := TCollections.CreateObjectList<TOrder>(True);
 end;
 
+
 procedure TOrderStore.Init(aDataModuleOrdes: TDataModuleOrders);
 var
     aDataSet: TDataSet;
-    aOrder:   TOrder;
+    aOrder: TOrder;
     aAddDate: integer;
 begin
     // connect with database
     aDataModuleOrdes.fdqOrders.Open();
     fOrders.Clear();
     aDataSet := aDataModuleOrdes.fdqOrders;
-    aAddDate := Round(Int(Now) - EncodeDate(1998,05,06)) - 1;
+    aAddDate := Round(Int(Now) - EncodeDate(1998, 05, 06)) - 1;
     // --
     aDataSet.Open;
     try
@@ -54,15 +57,18 @@ begin
             // aDataSet.FieldByName('EmployeeID').AsInteger;
             aOrder.SaleDate := aDataSet.FieldByName('OrderDate').AsDateTime + aAddDate;
             if not aDataSet.FieldByName('RequiredDate').IsNull then
-                aOrder.RequiredDate := aDataSet.FieldByName('RequiredDate').AsDateTime  + aAddDate;
-             if not aDataSet.FieldByName('ShippedDate').IsNull then
-                aOrder.ShipDate := aDataSet.FieldByName('ShippedDate').AsDateTime  + aAddDate;
+                aOrder.RequiredDate := aDataSet.FieldByName('RequiredDate').AsDateTime
+                    + aAddDate;
+            if not aDataSet.FieldByName('ShippedDate').IsNull then
+                aOrder.ShipDate := aDataSet.FieldByName('ShippedDate').AsDateTime
+                    + aAddDate;
             aDataSet.Next();
         end;
     finally
         aDataSet.Close();
     end;
 end;
+
 
 function TOrderStore.GetOrders: IList<TOrder>;
 begin

@@ -31,7 +31,8 @@ uses
 // ---------------------------------------------------------
 
 type
-    TOrdersStoreFake = class(TInterfacedObject, IOrdersStore)
+    TOrdersStoreFake = class(TInterfacedObject,
+                             IOrdersStore)
     private
         fList: IList<TOrder>;
     public
@@ -42,12 +43,13 @@ type
 
 constructor TOrdersStoreFake.Create(aList: IList<TOrder>);
 begin
-    fList:= aList;
+    fList := aList;
 end;
+
 
 function TOrdersStoreFake.GetOrders: IList<TOrder>;
 begin
-    Result:= fList;
+    Result := fList;
 end;
 
 
@@ -63,14 +65,15 @@ end;
 
 function WithOrderList(const aRequireDates: TArray<TDateTime>): IList<TOrder>;
 var
-  idx: Integer;
+    idx: Integer;
 begin
     Result := TCollections.CreateList<TOrder>(true);
     for idx := 0 to High(aRequireDates) do
     begin
-        Result.Add( TOrder.Create().WithRequiredDate(aRequireDates[idx]) );
+        Result.Add(TOrder.Create().WithRequiredDate(aRequireDates[idx]));
     end;
 end;
+
 
 class procedure TBabyToyTester.RunTests(const aOutputStrings: TStrings);
 begin
@@ -84,11 +87,10 @@ var
     aOrders: IList<TOrder>;
     aOrderProcessor: TOrderProcessor;
 begin
-    aOrders := WithOrderList([
-        EncodeDate(2020,04,04),  // termianted order
-        EncodeDate(2020,05,12),  // urgent order (have to be shipped within 14 days
-        EncodeDate(2020,06,04)   // normal order
-    ]);
+    aOrders := WithOrderList([EncodeDate(2020, 04, 04), // termianted order
+        EncodeDate(2020, 05, 12), // urgent order (have to be shipped within 14 days
+        EncodeDate(2020, 06, 04) // normal order
+        ]);
 
     aOrderProcessor := TOrderProcessor.Create(TOrdersStoreFake.Create(aOrders));
 

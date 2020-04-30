@@ -5,12 +5,13 @@ interface
 uses
     Spring.Collections,
     System.SysUtils,
-  {}
+    {}
     Model.Order,
     Model.Interfaces;
 
 type
-    TOrderProcessor = class(TInterfacedObject, IOrderProcessor)
+    TOrderProcessor = class(TInterfacedObject,
+                            IOrderProcessor)
     private
         fOrderStore: IOrdersStore;
         function GetNowDate: TDateTime;
@@ -35,38 +36,40 @@ begin
     Result := Int(System.SysUtils.Now());
 end;
 
+
 function TOrderProcessor.GetTerminatedOrdersCount: integer;
 var
     aCounter: integer;
-    aOrder:   TOrder;
+    aOrder: TOrder;
 begin
     aCounter := 0;
     for aOrder in fOrderStore.GetOrders() do
     begin
         if not aOrder.ShipDate.HasValue then
-            if aOrder.RequiredDate.HasValue and
-                (aOrder.RequiredDate.Value <= GetNowDate()) then
+            if aOrder.RequiredDate.HasValue and (aOrder.RequiredDate.Value <= GetNowDate())
+            then
                 inc(aCounter);
     end;
     Result := aCounter;
 end;
 
+
 function TOrderProcessor.GetUrgentCount: integer;
 var
     aCounter: integer;
-    aOrder:   TOrder;
+    aOrder: TOrder;
 begin
     aCounter := 0;
     for aOrder in fOrderStore.GetOrders() do
     begin
         if not aOrder.ShipDate.HasValue then
-            if aOrder.RequiredDate.HasValue and
-                (aOrder.RequiredDate.Value > GetNowDate()) and
-                (aOrder.RequiredDate.Value < GetNowDate()+14) then
+            if aOrder.RequiredDate.HasValue and (aOrder.RequiredDate.Value > GetNowDate())
+                and (aOrder.RequiredDate.Value < GetNowDate() + 14) then
                 inc(aCounter);
     end;
     Result := aCounter;
 end;
+
 
 function TOrderProcessor.GetUrgentDays: integer;
 begin
