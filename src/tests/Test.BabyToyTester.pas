@@ -8,12 +8,19 @@ uses
     Spring.Collections;
 
 type
-    TBabyToyTester = class
+    TBabyToyTester = class(TComponent)
     private
-        class var fOutputStrings: TStrings;
-        class procedure Test1();
+        fOutputStrings: TStrings;
+        procedure ClearOutput();
+        procedure OutputLog(
+            const aFormatedText: string;
+            const aFormatArgs: array of const);
     public
-        class procedure RunTests(const aOutputStrings: TStrings);
+        constructor Create(AOwner: TComponent); override;
+        function WithOutput(const aOutputStrings: TStrings): TBabyToyTester;
+        procedure RunTests();
+    published
+        procedure Test1();
     end;
 
 
@@ -63,6 +70,36 @@ end;
 // ---------------------------------------------------------
 
 
+constructor TBabyToyTester.Create(AOwner: TComponent);
+begin
+    inherited;
+    fOutputStrings := nil;
+end;
+
+
+procedure TBabyToyTester.ClearOutput;
+begin
+    if fOutputStrings <> nil then
+        fOutputStrings.Clear();
+end;
+
+
+procedure TBabyToyTester.OutputLog(
+    const aFormatedText: string;
+    const aFormatArgs: array of const);
+begin
+    if fOutputStrings <> nil then
+        fOutputStrings.Add(Format(aFormatedText, aFormatArgs));
+end;
+
+
+procedure TBabyToyTester.RunTests();
+begin
+    ClearOutput();
+    Test1;
+end;
+
+
 function WithOrderList(const aRequireDates: TArray<TDateTime>): IList<TOrder>;
 var
     idx: Integer;
@@ -75,32 +112,33 @@ begin
 end;
 
 
-class procedure TBabyToyTester.RunTests(const aOutputStrings: TStrings);
-begin
-    fOutputStrings := aOutputStrings;
-    Test1;
-end;
-
-
-class procedure TBabyToyTester.Test1;
+procedure TBabyToyTester.Test1;
 var
     aOrders: IList<TOrder>;
     aOrderProcessor: TOrderProcessor;
 begin
     aOrders := WithOrderList([EncodeDate(2020, 04, 04), // termianted order
-        EncodeDate(2020, 05, 12), // urgent order (have to be shipped within 14 days
+        EncodeDate(2020, 05, 05), // urgent order (have to be shipped within 14 days
         EncodeDate(2020, 06, 04) // normal order
         ]);
 
     aOrderProcessor := TOrderProcessor.Create(TOrdersStoreFake.Create(aOrders));
 
-    fOutputStrings.Clear();
-    fOutputStrings.Add(Format('  GetUrgentOrders()          | actual: %d',
-        [aOrderProcessor.GetUrgentCount()]));
-    fOutputStrings.Add(Format('  GetTerminatedOrdersCount() | actual: %d',
-        [aOrderProcessor.GetTerminatedOrdersCount()]));
+    OutputLog(
+        '  GetUrgentOrders()          = 1 | actual: %d',
+        [aOrderProcessor.GetUrgentCount()]);
+    OutputLog(
+        '  GetTerminatedOrdersCount() = 1 | actual: %d',
+        [aOrderProcessor.GetTerminatedOrdersCount()]);
 
     aOrderProcessor.Free;
+end;
+
+
+function TBabyToyTester.WithOutput(const aOutputStrings: TStrings): TBabyToyTester;
+begin
+    Result := Self;
+    fOutputStrings := aOutputStrings;
 end;
 
 // ---------------------------------------------------------

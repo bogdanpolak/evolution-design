@@ -102,7 +102,7 @@ end;
 
 procedure TForm1.btnRunSimpleTestClick(Sender: TObject);
 begin
-    TBabyToyTester.RunTests(Memo1.Lines);
+    TBabyToyTester.Create(Self).WithOutput(Memo1.Lines).RunTests();
 end;
 
 
