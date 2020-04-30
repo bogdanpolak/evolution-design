@@ -19,15 +19,18 @@ uses
     Model.OrderProcessor,
     Model.OrderStore;
 
+
 class function TComposer.GetCompositionRoot: IOrderProcessor;
 begin
-    Result:= GlobalContainer.Resolve<IOrderProcessor>;
+    Result := GlobalContainer.Resolve<IOrderProcessor>;
 end;
+
 
 class function TComposer.GetOrderStore: IOrdersStore;
 begin
-    Result :=  GlobalContainer.Resolve<IOrdersStore>;
+    Result := GlobalContainer.Resolve<IOrdersStore>;
 end;
+
 
 class procedure TComposer.RegisterTypes();
 var
