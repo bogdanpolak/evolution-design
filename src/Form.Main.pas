@@ -29,16 +29,19 @@ type
         Memo1: TMemo;
         Splitter1: TSplitter;
         btnProcess: TButton;
-        btnListDates: TButton;
-        btnRunSimpleTest: TButton;
         ActionList1: TActionList;
         actDatabaseConnect: TAction;
         actRunOrdersProcessor: TAction;
+        FlowPanel1: TFlowPanel;
+        Panel1: TPanel;
+        btnListDates: TButton;
+        btnRunSimpleTest: TButton;
         procedure FormCreate(Sender: TObject);
         procedure btnListDatesClick(Sender: TObject);
         procedure btnRunSimpleTestClick(Sender: TObject);
         procedure actDatabaseConnectExecute(Sender: TObject);
         procedure actRunOrdersProcessorExecute(Sender: TObject);
+        procedure Panel1Click(Sender: TObject);
     private
         fOrderProcessor: IOrderProcessor;
     public
@@ -67,13 +70,18 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
     TComposer.RegisterTypes();
     fOrderProcessor := TComposer.GetCompositionRoot;
+end;
 
+procedure TForm1.Panel1Click(Sender: TObject);
+begin
+    FlowPanel1.Visible := False;
 end;
 
 procedure TForm1.actDatabaseConnectExecute(Sender: TObject);
 begin
     TComposer.GetOrderStore.Init(DataModuleOrders);
     actRunOrdersProcessor.Enabled:= True;
+    actDatabaseConnect.Enabled:= False;
 end;
 
 procedure TForm1.actRunOrdersProcessorExecute(Sender: TObject);

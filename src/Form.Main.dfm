@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'Form1'
-  ClientHeight = 314
+  ClientHeight = 488
   ClientWidth = 620
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,7 +18,7 @@ object Form1: TForm1
     Left = 217
     Top = 0
     Width = 5
-    Height = 314
+    Height = 444
     ExplicitHeight = 289
   end
   object GroupBox1: TGroupBox
@@ -26,11 +26,12 @@ object Form1: TForm1
     Left = 3
     Top = 3
     Width = 214
-    Height = 308
+    Height = 438
     Margins.Right = 0
     Align = alLeft
     Caption = 'GroupBox1'
     TabOrder = 0
+    ExplicitHeight = 308
     object btnConnect: TButton
       AlignWithMargins = True
       Left = 5
@@ -50,28 +51,8 @@ object Form1: TForm1
       Action = actRunOrdersProcessor
       Align = alTop
       TabOrder = 1
-    end
-    object btnListDates: TButton
-      AlignWithMargins = True
-      Left = 5
-      Top = 272
-      Width = 204
-      Height = 31
-      Align = alBottom
-      Caption = 'btnListDates'
-      TabOrder = 3
-      OnClick = btnListDatesClick
-    end
-    object btnRunSimpleTest: TButton
-      AlignWithMargins = True
-      Left = 5
-      Top = 232
-      Width = 204
-      Height = 34
-      Align = alBottom
-      Caption = 'btnRunSimpleTest'
-      TabOrder = 2
-      OnClick = btnRunSimpleTestClick
+      ExplicitLeft = 4
+      ExplicitTop = 85
     end
   end
   object Memo1: TMemo
@@ -79,7 +60,7 @@ object Form1: TForm1
     Left = 222
     Top = 3
     Width = 395
-    Height = 308
+    Height = 438
     Margins.Left = 0
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
@@ -92,6 +73,55 @@ object Form1: TForm1
     ParentFont = False
     ScrollBars = ssVertical
     TabOrder = 1
+  end
+  object FlowPanel1: TFlowPanel
+    AlignWithMargins = True
+    Left = 3
+    Top = 447
+    Width = 614
+    Height = 38
+    Align = alBottom
+    Caption = ' '
+    TabOrder = 2
+    object Panel1: TPanel
+      AlignWithMargins = True
+      Left = 4
+      Top = 4
+      Width = 133
+      Height = 29
+      BevelOuter = bvNone
+      Caption = 'Developer Mode:'
+      Color = clMenuHighlight
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clHighlightText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 0
+      OnClick = Panel1Click
+    end
+    object btnListDates: TButton
+      AlignWithMargins = True
+      Left = 143
+      Top = 4
+      Width = 125
+      Height = 29
+      Caption = 'btnListDates'
+      TabOrder = 1
+      OnClick = btnListDatesClick
+    end
+    object btnRunSimpleTest: TButton
+      AlignWithMargins = True
+      Left = 274
+      Top = 4
+      Width = 146
+      Height = 29
+      Caption = 'btnRunSimpleTest'
+      TabOrder = 2
+      OnClick = btnRunSimpleTestClick
+    end
   end
   object ActionList1: TActionList
     Left = 256
