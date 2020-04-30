@@ -1,4 +1,4 @@
-unit Test.OrderProcessorWithFake;
+unit Test.BabyToyTester;
 
 interface
 
@@ -8,7 +8,7 @@ uses
     Spring.Collections;
 
 type
-    TSimpleOrderProcessorTest = class
+    TBabyToyTester = class
     private
         class var fOutputStrings: TStrings;
         class procedure Test1();
@@ -72,14 +72,14 @@ begin
     end;
 end;
 
-class procedure TSimpleOrderProcessorTest.RunTests(const aOutputStrings: TStrings);
+class procedure TBabyToyTester.RunTests(const aOutputStrings: TStrings);
 begin
     fOutputStrings := aOutputStrings;
     Test1;
 end;
 
 
-class procedure TSimpleOrderProcessorTest.Test1;
+class procedure TBabyToyTester.Test1;
 var
     aOrders: IList<TOrder>;
     aOrderProcessor: TOrderProcessor;

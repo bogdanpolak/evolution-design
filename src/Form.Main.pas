@@ -50,7 +50,7 @@ implementation
 
 uses 
     DataModule.Orders,
-    Test.OrderProcessorWithFake;
+    Test.BabyToyTester;
 
 function DateToString(aDate: Nullable<TDateTime>): string;
 begin
@@ -81,7 +81,7 @@ end;
 
 procedure TForm1.btnRunSimpleTestClick(Sender: TObject);
 begin
-    TSimpleOrderProcessorTest.RunTests(Memo1.Lines);
+    TBabyToyTester.RunTests(Memo1.Lines);
 end;
 
 procedure TForm1.btnListDatesClick(Sender: TObject);
