@@ -5,12 +5,15 @@ interface
 uses
     System.Classes,
     System.SysUtils,
+    System.RTTI,
+    System.TypInfo,
     Spring.Collections;
 
 type
     TBabyToyTester = class(TComponent)
     private
         fOutputStrings: TStrings;
+    protected
         procedure ClearOutput();
         procedure OutputLog(
             const aFormatedText: string;
@@ -19,54 +22,13 @@ type
         constructor Create(AOwner: TComponent); override;
         function WithOutput(const aOutputStrings: TStrings): TBabyToyTester;
         procedure RunTests();
-    published
-        procedure Test1();
     end;
 
 
 implementation
 
-uses
-    Model.Interfaces,
-    DataModule.Orders,
-    Model.Order,
-    Model.OrderProcessor;
-
-
 // ---------------------------------------------------------
-// TFakeOrdersStore
-// ---------------------------------------------------------
-
-type
-    TOrdersStoreFake = class(TInterfacedObject,
-                             IOrdersStore)
-    private
-        fList: IList<TOrder>;
-    public
-        constructor Create(aList: IList<TOrder>);
-        procedure Init(aDataModuleOrdes: TDataModuleOrders);
-        function GetOrders(): IList<TOrder>;
-    end;
-
-constructor TOrdersStoreFake.Create(aList: IList<TOrder>);
-begin
-    fList := aList;
-end;
-
-
-function TOrdersStoreFake.GetOrders: IList<TOrder>;
-begin
-    Result := fList;
-end;
-
-
-procedure TOrdersStoreFake.Init(aDataModuleOrdes: TDataModuleOrders);
-begin
-end;
-
-
-// ---------------------------------------------------------
-// TSimpleOrderProcessorTest
+// TBabyToyTester
 // ---------------------------------------------------------
 
 
@@ -74,6 +36,40 @@ constructor TBabyToyTester.Create(AOwner: TComponent);
 begin
     inherited;
     fOutputStrings := nil;
+end;
+
+
+procedure InvokeTestMethods(aComponent: TComponent);
+var
+    aRttiContext: TRttiContext;
+    aClassInfo: TRttiType;
+    aSetupMethodInfo: TRttiMethod;
+    aTearDownMethodInfo: TRttiMethod;
+    aMethodInfo: TRttiMethod;
+begin
+    aClassInfo := aRttiContext.GetType(aComponent.ClassType);
+    aSetupMethodInfo := aClassInfo.GetMethod('Setup');
+    aTearDownMethodInfo := aClassInfo.GetMethod('TearDown');
+    for aMethodInfo in aClassInfo.GetMethods do
+    begin
+        if (aMethodInfo.Visibility = mvPublished) and
+            (Length(aMethodInfo.GetParameters) = 0) and
+            (aMethodInfo.Name.ToUpper <> 'SETUP') and
+            (aMethodInfo.Name.ToUpper <> 'TEARDOWN') then
+        begin
+            if aSetupMethodInfo <> nil then
+                aSetupMethodInfo.Invoke(
+                    aComponent,
+                    []);
+            aMethodInfo.Invoke(
+                aComponent,
+                []);
+            if aTearDownMethodInfo <> nil then
+                aTearDownMethodInfo.Invoke(
+                    aComponent,
+                    []);
+        end;
+    end;
 end;
 
 
@@ -96,42 +92,7 @@ end;
 procedure TBabyToyTester.RunTests();
 begin
     ClearOutput();
-    Test1;
-end;
-
-
-function WithOrderList(const aRequireDates: TArray<TDateTime>): IList<TOrder>;
-var
-    idx: Integer;
-begin
-    Result := TCollections.CreateObjectList<TOrder>(true);
-    for idx := 0 to High(aRequireDates) do
-    begin
-        Result.Add(TOrder.Create().WithRequiredDate(aRequireDates[idx]));
-    end;
-end;
-
-
-procedure TBabyToyTester.Test1;
-var
-    aOrders: IList<TOrder>;
-    aOrderProcessor: TOrderProcessor;
-begin
-    aOrders := WithOrderList([EncodeDate(2020, 04, 04), // termianted order
-        EncodeDate(2020, 05, 05), // urgent order (have to be shipped within 14 days
-        EncodeDate(2020, 06, 04) // normal order
-        ]);
-
-    aOrderProcessor := TOrderProcessor.Create(TOrdersStoreFake.Create(aOrders));
-
-    OutputLog(
-        '  GetUrgentOrders()          = 1 | actual: %d',
-        [aOrderProcessor.GetUrgentCount()]);
-    OutputLog(
-        '  GetTerminatedOrdersCount() = 1 | actual: %d',
-        [aOrderProcessor.GetTerminatedOrdersCount()]);
-
-    aOrderProcessor.Free;
+    InvokeTestMethods(Self);
 end;
 
 
@@ -145,3 +106,4 @@ end;
 
 
 end.
+

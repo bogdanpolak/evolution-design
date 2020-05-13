@@ -9,7 +9,9 @@ uses
   Model.OrderStore in 'logic\Model.OrderStore.pas',
   Composer in 'Composer.pas',
   DataModule.Orders in 'DataModule.Orders.pas' {DataModuleOrders: TDataModule},
-  Test.BabyToyTester in 'tests\Test.BabyToyTester.pas';
+  Test.BabyToyTester in 'tests\Test.BabyToyTester.pas',
+  Test.OrderProcessor in 'tests\Test.OrderProcessor.pas',
+  Fake.OrderStore in 'tests\Fake.OrderStore.pas';
 
 {$R *.res}
 
@@ -20,3 +22,4 @@ begin
   Application.CreateForm(TDataModuleOrders, DataModuleOrders);
   Application.Run;
 end.
+
