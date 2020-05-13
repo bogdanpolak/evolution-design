@@ -58,7 +58,7 @@ implementation
 uses
     Composer,
     DataModule.Orders,
-    Test.BabyToyTester;
+    Test.BabyToyTester, Test.OrderProcessor;
 
 
 function DateToString(aDate: Nullable<TDateTime>): string;
@@ -102,7 +102,9 @@ end;
 
 procedure TForm1.btnRunSimpleTestClick(Sender: TObject);
 begin
-    TBabyToyTester.Create(Self).WithOutput(Memo1.Lines).RunTests();
+    TestOrderProcessor.Create(Self)
+        .WithOutput(Memo1.Lines)
+        .RunTests();
 end;
 
 
