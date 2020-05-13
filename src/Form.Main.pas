@@ -20,7 +20,6 @@ uses
     {}
     Model.Interfaces,
     Model.Order,
-    Composer,
     System.Actions,
     Vcl.ActnList;
 
@@ -57,6 +56,7 @@ implementation
 {$R *.dfm}
 
 uses
+    Composer,
     DataModule.Orders,
     Test.BabyToyTester;
 

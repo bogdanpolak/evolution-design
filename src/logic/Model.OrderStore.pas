@@ -57,11 +57,11 @@ begin
             // aDataSet.FieldByName('EmployeeID').AsInteger;
             aOrder.SaleDate := aDataSet.FieldByName('OrderDate').AsDateTime + aAddDate;
             if not aDataSet.FieldByName('RequiredDate').IsNull then
-                aOrder.RequiredDate := aDataSet.FieldByName('RequiredDate').AsDateTime
-                    + aAddDate;
+                aOrder.RequiredDate :=
+                    TDateTime(aDataSet.FieldByName('RequiredDate').AsDateTime + aAddDate);
             if not aDataSet.FieldByName('ShippedDate').IsNull then
-                aOrder.ShipDate := aDataSet.FieldByName('ShippedDate').AsDateTime
-                    + aAddDate;
+                aOrder.ShipDate := TDateTime(aDataSet.FieldByName('ShippedDate')
+                    .AsDateTime + aAddDate);
             aDataSet.Next();
         end;
     finally

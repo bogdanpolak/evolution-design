@@ -104,7 +104,7 @@ function WithOrderList(const aRequireDates: TArray<TDateTime>): IList<TOrder>;
 var
     idx: Integer;
 begin
-    Result := TCollections.CreateList<TOrder>(true);
+    Result := TCollections.CreateObjectList<TOrder>(true);
     for idx := 0 to High(aRequireDates) do
     begin
         Result.Add(TOrder.Create().WithRequiredDate(aRequireDates[idx]));
