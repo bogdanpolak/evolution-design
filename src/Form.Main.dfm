@@ -31,7 +31,6 @@ object Form1: TForm1
     Align = alLeft
     Caption = 'GroupBox1'
     TabOrder = 0
-    ExplicitHeight = 308
     object btnConnect: TButton
       AlignWithMargins = True
       Left = 5
@@ -51,8 +50,6 @@ object Form1: TForm1
       Action = actRunOrdersProcessor
       Align = alTop
       TabOrder = 1
-      ExplicitLeft = 4
-      ExplicitTop = 85
     end
   end
   object Memo1: TMemo
@@ -121,6 +118,17 @@ object Form1: TForm1
       Caption = 'btnRunSimpleTest'
       TabOrder = 2
       OnClick = btnRunSimpleTestClick
+    end
+    object btnFastMMDemo: TButton
+      AlignWithMargins = True
+      Left = 426
+      Top = 4
+      Width = 159
+      Height = 29
+      Align = alLeft
+      Caption = 'btnFastMMDemo'
+      TabOrder = 3
+      OnClick = btnFastMMDemoClick
     end
   end
   object ActionList1: TActionList

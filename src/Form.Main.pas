@@ -37,12 +37,14 @@ type
         Panel1: TPanel;
         btnListDates: TButton;
         btnRunSimpleTest: TButton;
+    btnFastMMDemo: TButton;
         procedure FormCreate(Sender: TObject);
         procedure btnListDatesClick(Sender: TObject);
         procedure btnRunSimpleTestClick(Sender: TObject);
         procedure actDatabaseConnectExecute(Sender: TObject);
         procedure actRunOrdersProcessorExecute(Sender: TObject);
         procedure Panel1Click(Sender: TObject);
+    procedure btnFastMMDemoClick(Sender: TObject);
     private
         fOrderProcessor: IOrderProcessor;
     public
@@ -58,7 +60,7 @@ implementation
 uses
     Composer,
     DataModule.Orders,
-    Test.BabyToyTester, Test.OrderProcessor;
+    Test.BabyToyTester, Test.OrderProcessor, Utils.FastMM;
 
 
 function DateToString(aDate: Nullable<TDateTime>): string;
@@ -107,6 +109,15 @@ begin
         .RunTests();
 end;
 
+
+procedure TForm1.btnFastMMDemoClick(Sender: TObject);
+begin
+    btnFastMMDemo.Caption := TFastMM4Utils.GetFormattedMemoryUsed();
+    with TStringList.Create() do begin
+        Add(StringOfChar('-',5000));
+	    Add(StringOfChar('*',100000));
+    end;
+end;
 
 procedure TForm1.btnListDatesClick(Sender: TObject);
 var

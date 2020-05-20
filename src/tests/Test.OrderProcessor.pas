@@ -5,20 +5,22 @@ interface
 uses
     System.Classes,
     System.SysUtils,
+    System.RTTI,
     Spring.Collections,
     Test.BabyToyTester,
     {}
     Model.OrderProcessor,
     Model.Interfaces,
     Model.Order,
-    Fake.OrderStore;
+    Delphi.Mocks;
 
 type
     TestOrderProcessor = class(TBabyToyTester)
     private
         fOrders: IList<TOrder>;
         fOrderProcessor: TOrderProcessor;
-        fFakeOrderStore: TOrdersStoreFake;
+        fMockOrderStore: TMock<IOrdersStore>;
+        procedure GivenOrders_WithRequireDates(const aRequireDates: TArray<TDateTime>);
     public
         procedure Setup;
         procedure Teardown;
@@ -31,11 +33,22 @@ type
 implementation
 
 
+function Today(): TDateTime;
+begin
+    Result := Date();
+end;
+
+
 procedure TestOrderProcessor.Setup;
 begin
     fOrders := TCollections.CreateObjectList<TOrder>(true);
-    fFakeOrderStore := TOrdersStoreFake.Create(fOrders);
-    fOrderProcessor := TOrderProcessor.Create(fFakeOrderStore);
+
+    fMockOrderStore := TMock<IOrdersStore>.Create();
+    fMockOrderStore.Setup
+        .WillReturn(TValue.From<IList<TOrder>>(fOrders))
+        .When.GetOrders();
+
+    fOrderProcessor := TOrderProcessor.Create(fMockOrderStore);
 end;
 
 
@@ -45,23 +58,26 @@ begin
 end;
 
 
+procedure TestOrderProcessor.GivenOrders_WithRequireDates(
+	const aRequireDates: TArray<TDateTime>);
+var
+  idx: Integer;
+begin
+    for idx := 0 to High(aRequireDates) do
+	    fOrders.Add(TOrder.Create().WithRequiredDate(aRequireDates[idx]));
+end;
+
+
 procedure TestOrderProcessor.TestGetUrgentCount;
 var
     actualUrgent: Integer;
-    aToday: TDateTime;
 begin
-    // 3xA:
-    // ARRANGE
-    aToday := Date();
-    fFakeOrderStore.WithOrders([aToday - 2, // termianted order
-        aToday + 2, // urgent order (have to be shipped within 14 days
-        aToday + 14 // normal order
-        ]);
+    GivenOrders_WithRequireDates([
+        Today()+2
+    ]);
 
-    // ACT
     actualUrgent := fOrderProcessor.GetUrgentCount();
 
-    // ASSERT
     OutputLog(
         '  GetUrgentOrders()          = 1 | actual: %d',
         [actualUrgent]);
@@ -71,22 +87,19 @@ end;
 procedure TestOrderProcessor.GetTerminatedOrdersCount;
 var
     actualTerminated: Integer;
-    aToday: TDateTime;
 begin
-    // 3xA:
-    // ARRANGE
-    aToday := Date();
-    fFakeOrderStore.WithOrders([aToday - 2, // termianted order
-        aToday + 2, // urgent order (have to be shipped within 14 days
-        aToday + 14 // normal order
-        ]);
+    GivenOrders_WithRequireDates([
+        Today()+25,
+        Today()-365,
+        Today()-3,
+        Today()+1,
+        Today()+365
+    ]);
 
-    // ACT
     actualTerminated := fOrderProcessor.GetTerminatedOrdersCount();
 
-    // ASSERT
     OutputLog(
-        '  GetTerminatedOrdersCount() = 1 | actual: %d',
+        '  GetTerminatedOrdersCount() = 2 | actual: %d',
         [actualTerminated]);
 end;
 
