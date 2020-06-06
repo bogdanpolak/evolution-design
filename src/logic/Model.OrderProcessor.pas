@@ -14,8 +14,7 @@ type
                             IOrderProcessor)
     private
         fOrderStore: IOrdersStore;
-        function GetNowDate: TDateTime;
-        function GetUrgentDays: integer;
+        function GetToday(): TDateTime;
     public
         constructor Create(aOrderStore: IOrdersStore);
         function GetUrgentCount: integer;
@@ -31,7 +30,7 @@ begin
 end;
 
 
-function TOrderProcessor.GetNowDate: TDateTime;
+function TOrderProcessor.GetToday(): TDateTime;
 begin
     Result := Int(System.SysUtils.Now());
 end;
@@ -46,7 +45,7 @@ begin
     for aOrder in fOrderStore.GetOrders() do
     begin
         if not aOrder.ShipDate.HasValue then
-            if aOrder.RequiredDate.HasValue and (aOrder.RequiredDate.Value <= GetNowDate())
+            if aOrder.RequiredDate.HasValue and (aOrder.RequiredDate.Value <= GetToday())
             then
                 inc(aCounter);
     end;
@@ -63,17 +62,12 @@ begin
     for aOrder in fOrderStore.GetOrders() do
     begin
         if not aOrder.ShipDate.HasValue then
-            if aOrder.RequiredDate.HasValue and (aOrder.RequiredDate.Value > GetNowDate())
-                and (aOrder.RequiredDate.Value < GetNowDate() + 14) then
+            if aOrder.RequiredDate.HasValue and (aOrder.RequiredDate.Value > GetToday())
+                and (aOrder.RequiredDate.Value < GetToday() + 14) then
                 inc(aCounter);
     end;
     Result := aCounter;
 end;
 
-
-function TOrderProcessor.GetUrgentDays: integer;
-begin
-    Result := 10;
-end;
 
 end.
