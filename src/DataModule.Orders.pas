@@ -45,9 +45,8 @@ type
         fdqOrdersShipPostalCode: TStringField;
         fdqOrdersShipCountry: TStringField;
     private
-        { Private declarations }
     public
-        { Public declarations }
+        procedure Connect();
     end;
 
 var
@@ -57,5 +56,10 @@ implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 {$R *.dfm}
+
+procedure TDataModuleOrders.Connect();
+begin
+    FDConnection.Open();
+end;
 
 end.

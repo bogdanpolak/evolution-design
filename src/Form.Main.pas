@@ -90,6 +90,7 @@ end;
 procedure TForm1.actDatabaseConnectExecute(Sender: TObject);
 begin
     TComposer.GetOrderStore.Init(DataModuleOrders);
+    DataModuleOrders.Connect();
     actRunOrdersProcessor.Enabled := True;
     actDatabaseConnect.Enabled := False;
 end;
