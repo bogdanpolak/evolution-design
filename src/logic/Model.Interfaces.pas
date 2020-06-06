@@ -5,13 +5,13 @@ interface
 uses
     Spring.Collections,
     {}
-    DataModule.Orders,
+    DataModule.Main,
     Model.Order;
 
 type
     IOrdersStore = interface(IInvokable)
         ['{6D0F52B4-A96F-4C96-97A4-DE45324FDE1B}']
-        procedure Init(aDataModuleOrdes: TDataModuleOrders);
+        procedure Init(aDataModuleMain: TDataModuleMain);
         function GetOrders(): IList<TOrder>;
     end;
 

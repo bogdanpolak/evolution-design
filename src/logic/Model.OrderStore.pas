@@ -9,7 +9,7 @@ uses
     Spring.Collections,
     Data.DB,
     {}
-    DataModule.Orders,
+    DataModule.Main,
     Model.Order,
     Model.Interfaces;
 
@@ -20,7 +20,7 @@ type
         fOrders: IList<TOrder>;
     public
         constructor Create;
-        procedure Init(aDataModuleOrdes: TDataModuleOrders);
+        procedure Init(aDataModuleMain: TDataModuleMain);
         function GetOrders(): IList<TOrder>;
     end;
 
@@ -33,18 +33,15 @@ begin
 end;
 
 
-procedure TOrderStore.Init(aDataModuleOrdes: TDataModuleOrders);
+procedure TOrderStore.Init(aDataModuleMain: TDataModuleMain);
 var
     aDataSet: TDataSet;
     aOrder: TOrder;
     aAddDate: integer;
 begin
-    // connect with database
-    aDataModuleOrdes.fdqOrders.Open();
     fOrders.Clear();
-    aDataSet := aDataModuleOrdes.fdqOrders;
     aAddDate := Round(Int(Now) - EncodeDate(1998, 05, 06)) - 1;
-    // --
+    aDataSet := aDataModuleMain.fdqOrders;
     aDataSet.Open;
     try
         aDataSet.First;

@@ -37,14 +37,14 @@ type
         Panel1: TPanel;
         btnListDates: TButton;
         btnRunSimpleTest: TButton;
-    btnFastMMDemo: TButton;
+        btnFastMMDemo: TButton;
         procedure FormCreate(Sender: TObject);
         procedure btnListDatesClick(Sender: TObject);
         procedure btnRunSimpleTestClick(Sender: TObject);
         procedure actDatabaseConnectExecute(Sender: TObject);
         procedure actRunOrdersProcessorExecute(Sender: TObject);
         procedure Panel1Click(Sender: TObject);
-    procedure btnFastMMDemoClick(Sender: TObject);
+        procedure btnFastMMDemoClick(Sender: TObject);
     private
         fOrderProcessor: IOrderProcessor;
     public
@@ -59,7 +59,7 @@ implementation
 
 uses
     Composer,
-    DataModule.Orders,
+    DataModule.Main,
     Test.BabyToyTester, Test.OrderProcessor, Utils.FastMM;
 
 
@@ -89,8 +89,8 @@ end;
 
 procedure TForm1.actDatabaseConnectExecute(Sender: TObject);
 begin
-    TComposer.GetOrderStore.Init(DataModuleOrders);
-    DataModuleOrders.Connect();
+    TComposer.GetOrderStore.Init(DataModuleMain);
+    DataModuleMain.Connect();
     actRunOrdersProcessor.Enabled := True;
     actDatabaseConnect.Enabled := False;
 end;

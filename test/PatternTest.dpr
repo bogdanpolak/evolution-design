@@ -17,7 +17,7 @@ uses
   Model.Order in '..\src\logic\Model.Order.pas',
   Model.OrderProcessor in '..\src\logic\Model.OrderProcessor.pas',
   Model.OrderStore in '..\src\logic\Model.OrderStore.pas',
-  DataModule.Orders in '..\src\DataModule.Orders.pas' {DataModuleOrders: TDataModule},
+  DataModule.Main in '..\src\DataModule.Main.pas' {DataModuleMain: TDataModule},
   Delphi.Mocks.AutoMock in '..\components\dephi-mocks\Delphi.Mocks.AutoMock.pas',
   Delphi.Mocks.Behavior in '..\components\dephi-mocks\Delphi.Mocks.Behavior.pas',
   Delphi.Mocks.Expectation in '..\components\dephi-mocks\Delphi.Mocks.Expectation.pas',

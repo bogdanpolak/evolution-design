@@ -1,4 +1,4 @@
-unit DataModule.Orders;
+unit DataModule.Main;
 
 interface
 
@@ -27,7 +27,7 @@ uses
     FireDAC.Comp.Client;
 
 type
-    TDataModuleOrders = class(TDataModule)
+    TDataModuleMain = class(TDataModule)
         FDConnection: TFDConnection;
         fdqOrders: TFDQuery;
         fdqOrdersOrderID: TFDAutoIncField;
@@ -50,14 +50,14 @@ type
     end;
 
 var
-    DataModuleOrders: TDataModuleOrders;
+    DataModuleMain: TDataModuleMain;
 
 implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 {$R *.dfm}
 
-procedure TDataModuleOrders.Connect();
+procedure TDataModuleMain.Connect();
 begin
     FDConnection.Open();
 end;

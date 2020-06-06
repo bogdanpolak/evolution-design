@@ -1,4 +1,4 @@
-object DataModuleOrders: TDataModuleOrders
+object DataModuleMain: TDataModuleMain
   OldCreateOrder = False
   Height = 147
   Width = 277
