@@ -9,7 +9,7 @@ uses
   Model.OrderProcessor in 'logic\Model.OrderProcessor.pas',
   Model.OrderStore in 'logic\Model.OrderStore.pas',
   Composer in 'Composer.pas',
-  DataModule.Orders in 'DataModule.Orders.pas' {DataModuleOrders: TDataModule},
+  DataModule.Main in 'DataModule.Main.pas' {DataModuleMain: TDataModule},
   Test.BabyToyTester in 'tests\Test.BabyToyTester.pas',
   Test.OrderProcessor in 'tests\Test.OrderProcessor.pas',
   FastMM4Messages in '..\components\fastmm4\FastMM4Messages.pas',
@@ -41,7 +41,7 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TForm1, Form1);
-  Application.CreateForm(TDataModuleOrders, DataModuleOrders);
+  Application.CreateForm(TDataModuleMain, DataModuleMain);
   Application.Run;
 end.
 

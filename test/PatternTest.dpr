@@ -1,5 +1,6 @@
 program PatternTest;
 
+{$WARN DUPLICATE_CTOR_DTOR OFF}
 {$IFNDEF TESTINSIGHT}
 {$APPTYPE CONSOLE}
 {$ENDIF}{$STRONGLINKTYPES ON}
@@ -16,25 +17,25 @@ uses
   Model.Order in '..\src\logic\Model.Order.pas',
   Model.OrderProcessor in '..\src\logic\Model.OrderProcessor.pas',
   Model.OrderStore in '..\src\logic\Model.OrderStore.pas',
-  DataModule.Orders in '..\src\DataModule.Orders.pas' {DataModuleOrders: TDataModule},
-  Delphi.Mocks.AutoMock in '..\src\dephi-mocks\Delphi.Mocks.AutoMock.pas',
-  Delphi.Mocks.Behavior in '..\src\dephi-mocks\Delphi.Mocks.Behavior.pas',
-  Delphi.Mocks.Expectation in '..\src\dephi-mocks\Delphi.Mocks.Expectation.pas',
-  Delphi.Mocks.Helpers in '..\src\dephi-mocks\Delphi.Mocks.Helpers.pas',
-  Delphi.Mocks.Interfaces in '..\src\dephi-mocks\Delphi.Mocks.Interfaces.pas',
-  Delphi.Mocks.MethodData in '..\src\dephi-mocks\Delphi.Mocks.MethodData.pas',
-  Delphi.Mocks.ObjectProxy in '..\src\dephi-mocks\Delphi.Mocks.ObjectProxy.pas',
-  Delphi.Mocks.ParamMatcher in '..\src\dephi-mocks\Delphi.Mocks.ParamMatcher.pas',
-  Delphi.Mocks in '..\src\dephi-mocks\Delphi.Mocks.pas',
-  Delphi.Mocks.Proxy in '..\src\dephi-mocks\Delphi.Mocks.Proxy.pas',
-  Delphi.Mocks.Proxy.TypeInfo in '..\src\dephi-mocks\Delphi.Mocks.Proxy.TypeInfo.pas',
-  Delphi.Mocks.ReturnTypePatch in '..\src\dephi-mocks\Delphi.Mocks.ReturnTypePatch.pas',
-  Delphi.Mocks.Utils in '..\src\dephi-mocks\Delphi.Mocks.Utils.pas',
-  Delphi.Mocks.Validation in '..\src\dephi-mocks\Delphi.Mocks.Validation.pas',
-  Delphi.Mocks.VirtualInterface in '..\src\dephi-mocks\Delphi.Mocks.VirtualInterface.pas',
-  Delphi.Mocks.VirtualMethodInterceptor in '..\src\dephi-mocks\Delphi.Mocks.VirtualMethodInterceptor.pas',
-  Delphi.Mocks.WeakReference in '..\src\dephi-mocks\Delphi.Mocks.WeakReference.pas',
-  Delphi.Mocks.When in '..\src\dephi-mocks\Delphi.Mocks.When.pas';
+  DataModule.Main in '..\src\DataModule.Main.pas' {DataModuleMain: TDataModule},
+  Delphi.Mocks.AutoMock in '..\components\dephi-mocks\Delphi.Mocks.AutoMock.pas',
+  Delphi.Mocks.Behavior in '..\components\dephi-mocks\Delphi.Mocks.Behavior.pas',
+  Delphi.Mocks.Expectation in '..\components\dephi-mocks\Delphi.Mocks.Expectation.pas',
+  Delphi.Mocks.Helpers in '..\components\dephi-mocks\Delphi.Mocks.Helpers.pas',
+  Delphi.Mocks.Interfaces in '..\components\dephi-mocks\Delphi.Mocks.Interfaces.pas',
+  Delphi.Mocks.MethodData in '..\components\dephi-mocks\Delphi.Mocks.MethodData.pas',
+  Delphi.Mocks.ObjectProxy in '..\components\dephi-mocks\Delphi.Mocks.ObjectProxy.pas',
+  Delphi.Mocks.ParamMatcher in '..\components\dephi-mocks\Delphi.Mocks.ParamMatcher.pas',
+  Delphi.Mocks in '..\components\dephi-mocks\Delphi.Mocks.pas',
+  Delphi.Mocks.Proxy in '..\components\dephi-mocks\Delphi.Mocks.Proxy.pas',
+  Delphi.Mocks.Proxy.TypeInfo in '..\components\dephi-mocks\Delphi.Mocks.Proxy.TypeInfo.pas',
+  Delphi.Mocks.ReturnTypePatch in '..\components\dephi-mocks\Delphi.Mocks.ReturnTypePatch.pas',
+  Delphi.Mocks.Utils in '..\components\dephi-mocks\Delphi.Mocks.Utils.pas',
+  Delphi.Mocks.Validation in '..\components\dephi-mocks\Delphi.Mocks.Validation.pas',
+  Delphi.Mocks.VirtualInterface in '..\components\dephi-mocks\Delphi.Mocks.VirtualInterface.pas',
+  Delphi.Mocks.VirtualMethodInterceptor in '..\components\dephi-mocks\Delphi.Mocks.VirtualMethodInterceptor.pas',
+  Delphi.Mocks.WeakReference in '..\components\dephi-mocks\Delphi.Mocks.WeakReference.pas',
+  Delphi.Mocks.When in '..\components\dephi-mocks\Delphi.Mocks.When.pas';
 
 var
   runner : ITestRunner;
