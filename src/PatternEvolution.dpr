@@ -31,7 +31,9 @@ uses
   Delphi.Mocks.VirtualInterface in '..\components\dephi-mocks\Delphi.Mocks.VirtualInterface.pas',
   Delphi.Mocks.VirtualMethodInterceptor in '..\components\dephi-mocks\Delphi.Mocks.VirtualMethodInterceptor.pas',
   Delphi.Mocks.WeakReference in '..\components\dephi-mocks\Delphi.Mocks.WeakReference.pas',
-  Delphi.Mocks.When in '..\components\dephi-mocks\Delphi.Mocks.When.pas';
+  Delphi.Mocks.When in '..\components\dephi-mocks\Delphi.Mocks.When.pas',
+  Comp.Generator.DataProxy in '..\components\delphi-dataproxy\Comp.Generator.DataProxy.pas',
+  Data.DataProxy in '..\components\delphi-dataproxy\Data.DataProxy.pas';
 
 {$R *.res}
 
