@@ -44,6 +44,7 @@ type
         fdqOrdersShipRegion: TStringField;
         fdqOrdersShipPostalCode: TStringField;
         fdqOrdersShipCountry: TStringField;
+        procedure DataModuleCreate(Sender: TObject);
     private
     public
         procedure Connect();
@@ -56,6 +57,11 @@ implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 {$R *.dfm}
+
+procedure TDataModuleMain.DataModuleCreate(Sender: TObject);
+begin
+    // TODO: DataMoule initialization
+end;
 
 procedure TDataModuleMain.Connect();
 begin
