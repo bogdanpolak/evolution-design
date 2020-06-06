@@ -136,7 +136,7 @@ type
 
     function Expect : IExpect<T>;
 
-    {$Message 'TODO: Implement ISetup.Before and ISetup.After.'}
+    {.$Message 'TODO: Implement ISetup.Before and ISetup.After.'}
     function WillReturn(const value : TValue) : IWhen<T>; overload;
     function WillReturn(const value : TValue; const AllowNil: Boolean) : IWhen<T>; overload;
     procedure WillReturnDefault(const AMethodName : string; const value : TValue);
