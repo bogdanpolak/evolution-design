@@ -46,6 +46,7 @@ type
         fdqOrdersShipCountry: TStringField;
         procedure DataModuleCreate(Sender: TObject);
     private
+        fConnectionStrtring: string;
     public
         procedure Connect();
     end;
@@ -54,6 +55,10 @@ var
     DataModuleMain: TDataModuleMain;
 
 implementation
+
+uses
+    System.IOUtils, 
+    UpgradeDatabase;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 {$R *.dfm}
@@ -65,7 +70,9 @@ end;
 
 procedure TDataModuleMain.Connect();
 begin
-    FDConnection.Open();
+    fConnectionStrtring := TDatabaseUpgrader.GetConnectionString();
+    FDConnection.Open(fConnectionStrtring);
+    TDatabaseUpgrader.UpgradeDatabase(FDConnection);
 end;
 
 end.

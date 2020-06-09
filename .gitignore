@@ -97,6 +97,12 @@ __recovery/
 # (*.o) C++ object file or compiled translation unit.
 # (*.pch) C++ precompiled header file.
 
+
+# ########## Misc Files
+# (*.sdb) SQLite Database
+
+*.sdb
+
 # ########## Misc Files
 
 TestInsightSettings.ini
