@@ -57,7 +57,6 @@ var
 implementation
 
 uses
-    System.IOUtils, 
     UpgradeDatabase;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
