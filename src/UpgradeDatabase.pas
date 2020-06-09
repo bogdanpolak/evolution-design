@@ -17,11 +17,13 @@ type
         DATABASE_ExpectedVersion = 2;
     private
         fConnection: TFDConnection;
+        procedure CreateVersionTableIfNotExist();
         function GetDatabaseVersion(): integer;
         function Ver001_to_Ver002: integer;
     end;
 
 implementation
+
 
 constructor TDatabaseUpgrader.Create(aConnection: TFDConnection);
 begin
@@ -54,10 +56,9 @@ begin
     end;
 end;
 
-function TDatabaseUpgrader.GetDatabaseVersion(): integer;
+procedure TDatabaseUpgrader.CreateVersionTableIfNotExist;
 var
     slNames: TStringList;
-    sVersion: string;
 begin
     slNames := TStringList.Create();
     try
@@ -73,12 +74,19 @@ begin
             {} ' (Name,Value,Description)' +
             {}' VALUES (''Version'',''1'',''Database version'')');
         end;
-        sVersion := fConnection.ExecSQLScalar
-            ('SELECT Value FROM Configuration WHERE Name=''Version''');
-        Result := StrToInt(sVersion);
     finally
         slNames.Free;
     end;
+end;
+
+function TDatabaseUpgrader.GetDatabaseVersion(): integer;
+var
+    sVersion: string;
+begin
+    CreateVersionTableIfNotExist();
+    sVersion := fConnection.ExecSQLScalar
+        ('SELECT Value FROM Configuration WHERE Name=''Version''');
+    Result := StrToInt(sVersion);
 end;
 
 function TDatabaseUpgrader.Ver001_to_Ver002(): integer;
