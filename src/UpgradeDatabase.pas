@@ -5,15 +5,19 @@ interface
 uses
     System.Classes,
     System.SysUtils,
+    System.IOUtils,
+    FireDAC.Stan.Intf,
     FireDAC.Comp.Client;
 
 type
     TDatabaseUpgrader = class
     public
+        class function GetConnectionString(): string;
         class procedure UpgradeDatabase(aConnection: TFDConnection);
         constructor Create(aConnection: TFDConnection);
         procedure Execute();
     private const
+        CONNDEF_SQLiteDemo = 'SQLite_Demo';
         DATABASE_ExpectedVersion = 2;
     private
         fConnection: TFDConnection;
@@ -24,6 +28,26 @@ type
 
 implementation
 
+
+class function TDatabaseUpgrader.GetConnectionString(): string;
+var
+    aConnectionDef: IFDStanConnectionDef;
+    aConnectionStr: string;
+    aDatabaseFile: string;
+    aFileName: string;
+begin
+    aConnectionDef := FDManager.ConnectionDefs.FindConnectionDef(CONNDEF_SQLiteDemo);
+    if aConnectionDef = nil then
+        raise Exception.Create
+            (Format('FireDAC %s connection definition is required to run application',
+            [CONNDEF_SQLiteDemo]));
+    aDatabaseFile := aConnectionDef.AsString['Database'];
+    aFileName := ExtractFileName(aDatabaseFile);
+    if not FileExists(aFileName) then
+        TFile.Copy(aDatabaseFile, aFileName);
+    aConnectionStr := aConnectionDef.BuildString();
+    Result := StringReplace(aConnectionStr, aDatabaseFile, aFileName, []);
+end;
 
 procedure SendLog (const aText: string; const aParams: array of const);
 begin

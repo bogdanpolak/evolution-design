@@ -47,9 +47,6 @@ type
         procedure DataModuleCreate(Sender: TObject);
     private
         fConnectionStrtring: string;
-        procedure CloneDemoDatabseToAppFolder;
-    private const
-        CONNDEF_SQLiteDemo = 'SQLite_Demo';
     public
         procedure Connect();
     end;
@@ -71,30 +68,9 @@ begin
     // TODO: DataMoule initialization
 end;
 
-procedure TDataModuleMain.CloneDemoDatabseToAppFolder();
-var
-    aConnectionDef: IFDStanConnectionDef;
-    aConnectionStr: string;
-    aDatabaseFile: string;
-    aFileName: string;
-begin
-    aConnectionDef := FDManager.ConnectionDefs.FindConnectionDef(CONNDEF_SQLiteDemo);
-    if aConnectionDef = nil then
-        raise Exception.Create
-            (Format('FireDAC %s connection definition is required to run application',
-            [CONNDEF_SQLiteDemo]));
-    aConnectionStr := aConnectionDef.BuildString();
-    aDatabaseFile := aConnectionDef.AsString['Database'];
-    aFileName := ExtractFileName(aDatabaseFile);
-    if not FileExists(aFileName) then
-        TFile.Copy(aDatabaseFile, aFileName);
-    aConnectionStr := StringReplace(aConnectionStr, aDatabaseFile, aFileName, []);
-    fConnectionStrtring := aConnectionStr;
-end;
-
 procedure TDataModuleMain.Connect();
 begin
-    CloneDemoDatabseToAppFolder();
+    fConnectionStrtring := TDatabaseUpgrader.GetConnectionString();
     FDConnection.Open(fConnectionStrtring);
     TDatabaseUpgrader.UpgradeDatabase(FDConnection);
 end;
