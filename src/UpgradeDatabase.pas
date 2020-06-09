@@ -28,6 +28,9 @@ type
 
 implementation
 
+uses
+    Utils.Application;
+
 
 class function TDatabaseUpgrader.GetConnectionString(): string;
 var
@@ -75,14 +78,14 @@ begin
     aCurrentVersion := GetDatabaseVersion();
     while aCurrentVersion < DATABASE_ExpectedVersion do
     begin
-        SendLog('Version before - %d',[aCurrentVersion]);
+        SendLog('Version before - %s',[TAppUtils.GetDataVersion()]);
         case aCurrentVersion of
             1:
                 aCurrentVersion := Ver001_to_Ver002()
         else
             raise Exception.Create('Unspported database version');
         end;
-        SendLog('Version after - %d',[aCurrentVersion])
+        SendLog('Version after - %d',[TAppUtils.GetDataVersion()])
     end;
 end;
 
