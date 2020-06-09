@@ -25,6 +25,10 @@ type
 implementation
 
 
+procedure SendLog (const aText: string; const aParams: array of const);
+begin
+end;
+
 constructor TDatabaseUpgrader.Create(aConnection: TFDConnection);
 begin
     fConnection := aConnection;
@@ -47,12 +51,14 @@ begin
     aCurrentVersion := GetDatabaseVersion();
     while aCurrentVersion < DATABASE_ExpectedVersion do
     begin
+        SendLog('Version before - %d',[aCurrentVersion]);
         case aCurrentVersion of
             1:
                 aCurrentVersion := Ver001_to_Ver002()
         else
             raise Exception.Create('Unspported database version');
         end;
+        SendLog('Version after - %d',[aCurrentVersion])
     end;
 end;
 
