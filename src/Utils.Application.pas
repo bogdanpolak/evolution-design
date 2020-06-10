@@ -29,11 +29,15 @@ procedure p0(p: PWordArray);
 begin
     if p<>nil then
         p^[0]:=1;
+    if p <> nil then
+        p^[0] := 1;
 end;
 
-procedure p1(var x: Integer);
+procedure p1(x: Integer);
 begin
     x := 5;
+    if x > 0 then
+        SendToLog('%d', [x]);
 end;
 
 type
@@ -44,11 +48,15 @@ type
     end;
 
     TAppHeader = packed record
-        CopyrightLine: string[40];
+        CopyrightLine: string[80];
     end;
 
     TAbstractData = class
         procedure Abstraction; virtual; abstract;
+    end;
+
+    TBussinessData = class(TAbstractData)
+        procedure Abstraction; override;
     end;
 
 // -----------------------------------------------------------------------------
@@ -64,11 +72,11 @@ type
     // -----------------------------------------------------------------
     // W1009 Redeclaration of '%s' hides a member in the base class
     TBase = class
-        Value: Integer;
+    protected
+        fValue: Integer;
     end;
 
     TDerived = class(TBase)
-        fValue: Integer;
         property Value: Integer read fValue write fValue;
     end;
     // -----------------------------------------------------------------
@@ -81,6 +89,8 @@ begin
             Result := 4.5;
         wdFriday:
             Result := 6;
+    else
+        Result := 0;
     end;
 end;
 
@@ -93,7 +103,8 @@ var
     abstractData: TAbstractData;
 begin
     // -----------------------------------------------------------------
-    abstractData := TAbstractData.Create();
+    abstractData := TBussinessData.Create();
+    abstractData.Free;
     // -----------------------------------------------------------------
     // W1050 WideChar reduced to byte char in set expressions
 {$WARN WIDECHAR_REDUCED OFF}
@@ -119,7 +130,7 @@ begin
     aHeader.CopyrightLine := TApplication.Copyright;
     // -----------------------------------------------------------------
     // W1013 Constant 0 converted to NIL (Delphi)
-    p0(0);
+    p0(nil);
     // -----------------------------------------------------------------
 end;
 
@@ -133,7 +144,8 @@ end;
 procedure Test_UnusedVariable;
 var
     aUnusedVariable: Integer;
-begin
+begin  //FI:W519
+    // TODO: Robota na "jutro"
 end;
 {$HINTS ON}
 
@@ -141,16 +153,12 @@ type
 {.$HINTS OFF}
     TSymbolNeverUsed = class
     private
-        fBar1: Integer;
         fBar2: Integer;
     public
         property Bar: Integer read fBar2 write fBar2;
     end;
 
 procedure RunWith_Hints;
-var
-    aUnusedVariable: Integer;
-    aValue: Integer;
 begin
     // -----------------------------------------------------------------
     // H2219 Private symbol '%s' declared but never used (Delphi)
@@ -160,21 +168,24 @@ begin
         Free;
     end;
     // -----------------------------------------------------------------
-    aValue := 20;
 end;
 
 // ===========================================================================
 // TMS FixInsight Warnings
 // ===========================================================================
 
-function DoSomething(aInput: Integer): Integer;
+function DoSomething(): Integer;
 var
-    Bar: Integer;
+    aBar: Integer;
+    aSymbolNeverUsed: TSymbolNeverUsed;
 begin
-    with TSymbolNeverUsed.Create() do
-    begin
-        Bar := 1;
-        Free;
+    aBar := 1;
+    Result := aBar;
+    aSymbolNeverUsed := TSymbolNeverUsed.Create();
+    try
+        aSymbolNeverUsed.Bar := aBar;
+    finally
+        aSymbolNeverUsed.Free;
     end;
 end;
 
@@ -206,15 +217,14 @@ end;
 
 function TVersionUtils.GenerateDataVerStr(aDataVersion: Integer; upgradeDate: string;
     aDataVersionString: TDataVersionString): string;
-var
-  isNewFormat: Boolean;
 begin
-    isNewFormat := aDataVersionString = dvsNumberDate;
-    if isNewFormat then
-        Exit(Format('ver.%d.%s', [aDataVersion, upgradeDate]))
+    if aDataVersionString = dvsNumberDate then
+    begin
+        fDataVersionUsage.Store(aDataVersion, aDataVersionString);
+        Result := Format('ver.%d.%s', [aDataVersion, upgradeDate]);
+    end
     else
-        Exit(Format('ver.%d.%s', [aDataVersion]));
-    fDataVersionUsage.Store(aDataVersion, aDataVersionString);
+        Result := Format('ver.%d', [aDataVersion]);
 end;
 
 { TDatabaseInfo }
@@ -249,16 +259,29 @@ var
     aVersion: Integer;
     aDatabaseUpgradeDate: TDateTime;
 begin
+    aVersionUtils := TVersionUtils.Create(nil);
     try
-        aVersionUtils := TVersionUtils.Create(nil);
-        dbInfo := BuildDatabaseInfo();
-        aVersion := dbInfo.GetDatabaseVersion();
-        aDatabaseUpgradeDate := dbInfo.GetDatabaseUpgradeDate();
-        aVersionUtils.GenerateDataVerStr(aVersion, FormatDateTime('yyyy-mm-dd',
-            aDatabaseUpgradeDate));
-    finally
+        try
+            dbInfo := BuildDatabaseInfo();
+            aVersion := dbInfo.GetDatabaseVersion();
+            aDatabaseUpgradeDate := dbInfo.GetDatabaseUpgradeDate();
+            Result := aVersionUtils.GenerateDataVerStr(aVersion, FormatDateTime('yyyy-mm-dd',
+                aDatabaseUpgradeDate));
+        finally
+            aVersionUtils.Free;
+        end;
+    except on e: Exception do
+        begin
+            RunWith_Warnings();
+            Result := '';
+        end;
     end;
-    RunWith_Warnings();
+end;
+
+{ TBussinessData }
+
+procedure TBussinessData.Abstraction;
+begin
 end;
 
 end.
