@@ -28,9 +28,6 @@ type
 
 implementation
 
-uses
-    Utils.Application;
-
 
 class function TDatabaseUpgrader.GetConnectionString(): string;
 var
@@ -50,10 +47,6 @@ begin
         TFile.Copy(aDatabaseFile, aFileName);
     aConnectionStr := aConnectionDef.BuildString();
     Result := StringReplace(aConnectionStr, aDatabaseFile, aFileName, []);
-end;
-
-procedure SendLog (const aText: string; const aParams: array of const);
-begin
 end;
 
 constructor TDatabaseUpgrader.Create(aConnection: TFDConnection);
@@ -78,14 +71,12 @@ begin
     aCurrentVersion := GetDatabaseVersion();
     while aCurrentVersion < DATABASE_ExpectedVersion do
     begin
-        SendLog('Version before - %s',[TAppUtils.GetDataVersion()]);
         case aCurrentVersion of
             1:
                 aCurrentVersion := Ver001_to_Ver002()
         else
             raise Exception.Create('Unspported database version');
         end;
-        SendLog('Version after - %d',[TAppUtils.GetDataVersion()])
     end;
 end;
 

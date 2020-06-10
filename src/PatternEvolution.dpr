@@ -34,8 +34,7 @@ uses
   Delphi.Mocks.When in '..\components\dephi-mocks\Delphi.Mocks.When.pas',
   Comp.Generator.DataProxy in '..\components\delphi-dataproxy\Comp.Generator.DataProxy.pas',
   Data.DataProxy in '..\components\delphi-dataproxy\Data.DataProxy.pas',
-  UpgradeDatabase in 'UpgradeDatabase.pas',
-  Utils.Application in 'Utils.Application.pas';
+  UpgradeDatabase in 'UpgradeDatabase.pas';
 
 {$R *.res}
 
