@@ -71,6 +71,7 @@ var
     actualUrgent: Integer;
 begin
     GivenOrders_WithRequireDates([Today() + 2]);
+    fOrders.Add(TOrder.Create());
 
     actualUrgent := fOrderProcessor.GetUrgentCount();
 
