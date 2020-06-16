@@ -110,3 +110,4 @@ TestInsightSettings.ini
 .vscode
 src-concept-helpers
 *.eof
+test/dunitx-results.xml
