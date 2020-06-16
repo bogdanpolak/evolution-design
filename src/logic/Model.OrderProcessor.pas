@@ -57,16 +57,14 @@ function TOrderProcessor.GetUrgentCount: integer;
 var
     aCounter: integer;
     aOrder: TOrder;
-    isDateUrgent : boolean;
 begin
     aCounter := 0;
     for aOrder in fOrderStore.GetOrders() do
     begin
-        if not aOrder.ShipDate.HasValue and aOrder.RequiredDate.HasValue  then begin
-            isDateUrgent := (aOrder.RequiredDate.Value > GetToday()) and (aOrder.RequiredDate.Value < GetToday() + 14);
-            if isDateUrgent then
+        if not aOrder.ShipDate.HasValue then
+            if aOrder.RequiredDate.HasValue and (aOrder.RequiredDate.Value > GetToday())
+                and (aOrder.RequiredDate.Value < GetToday() + 14) then
                 inc(aCounter);
-        end;
     end;
     Result := aCounter;
 end;
