@@ -59,7 +59,6 @@ var
     aOrder: TOrder;
 begin
     aCounter := 0;
-    isDateUrgent := False;
     for aOrder in fOrderStore.GetOrders() do
     begin
         if not aOrder.ShipDate.HasValue then
