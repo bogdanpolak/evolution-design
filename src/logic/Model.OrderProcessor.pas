@@ -64,9 +64,11 @@ begin
     for aOrder in fOrderStore.GetOrders() do
     begin
         if not aOrder.ShipDate.HasValue and aOrder.RequiredDate.HasValue  then
+        begin
             isDateUrgent := (aOrder.RequiredDate.Value > GetToday()) and (aOrder.RequiredDate.Value < GetToday() + 14);
             if isDateUrgent then
                 inc(aCounter);
+        end;
     end;
     Result := aCounter;
 end;
