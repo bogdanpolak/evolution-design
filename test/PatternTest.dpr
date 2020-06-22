@@ -35,7 +35,8 @@ uses
   Delphi.Mocks.VirtualInterface in '..\components\dephi-mocks\Delphi.Mocks.VirtualInterface.pas',
   Delphi.Mocks.VirtualMethodInterceptor in '..\components\dephi-mocks\Delphi.Mocks.VirtualMethodInterceptor.pas',
   Delphi.Mocks.WeakReference in '..\components\dephi-mocks\Delphi.Mocks.WeakReference.pas',
-  Delphi.Mocks.When in '..\components\dephi-mocks\Delphi.Mocks.When.pas';
+  Delphi.Mocks.When in '..\components\dephi-mocks\Delphi.Mocks.When.pas',
+  UpgradeDatabase in '..\src\UpgradeDatabase.pas';
 
 var
   runner : ITestRunner;
